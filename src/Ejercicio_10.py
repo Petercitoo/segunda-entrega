@@ -1,8 +1,9 @@
 def processing_rounds(rounds):
-    maxim = -1
     stats = {}
+#Separo la cantidad de rondas y los puntajes-temas    
     for rounds_ids, val in enumerate(rounds):
-        maxim = 0
+        maxim = -1
+#Por cada puntaje recorro juez para cada persona
         for person, scores in val["scores"].items():
             tot = 0
             for judge, score in scores.items():
@@ -16,12 +17,19 @@ def processing_rounds(rounds):
                 if stats[person]["best_round"] < tot:
                     stats[person]["best_round"] = tot
             else:
-                stats[person] = {"points": tot, "best_round": tot, "wins": 0, "prom": 0}
+                stats[person] = {"points": tot, "best_round": tot, "wins": 0, "prom": tot / (rounds_ids+1)}
         stats[ganador]["wins"] += 1
-        print(f"Ronda {rounds_ids} - {val["theme"]}: \n Ganador: {ganador} con {maxim}")
+        
+        print(f"\nRonda {rounds_ids} - {val["theme"]}: \n Ganador: {ganador} con {maxim} \n")
+        
+        in_order = sorted(stats.items(), key=lambda x: x[1]["points"], reverse = True)
+        
+        print("Progresion \n")
+        
+        for player, data in in_order:
+            print(f"{player}: Puntos: {data["points"]} | Victorias: {data["wins"]}  | Mejor ronda:{data["best_round"]} |" 
+                f" Un promedio de: {data["prom"]}\n")    
 
-    for player in stats.values():
-        player["prom"] = player["points"] / len(rounds)
     print(f" {'Cocinero':<15} {'Puntaje':<15} {'Rondas ganadas':<20} {'Mejor ronda':<15} {'Promedio':<5}")
     print("-"*79)
     for player, values in stats.items():
