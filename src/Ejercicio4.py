@@ -9,6 +9,7 @@ def ingresar_emails():
 
 def validar_emails(emails):
     for email in emails:
+#Verifico que cumplan con las condiciones.
         if (email.count("@") == 1 and
             not email.startswith(("@", ".")) and 
             not email.endswith(("@", "."))):    
